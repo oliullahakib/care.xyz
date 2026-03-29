@@ -15,10 +15,13 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: {
-    default: "Care",
-    template: "%s | Care"
+    default: "Care.xyz",
+    template: "%s | Care.xyz"
   },
-  description: "Every care in a single place.",
+  description: "Every care in a single place.Less hassle more care",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({ children }) {
