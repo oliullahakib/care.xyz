@@ -34,10 +34,10 @@ const TestimonialComponent = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-xl md:text-5xl font-bold text-gray-900 mb-4">
             What Our Families Say
           </h2>
-          <div className="w-16 h-1 bg-indigo-600 mx-auto mb-6 rounded-full"></div>
+          <div className="w-26 h-1 bg-indigo-600 mx-auto mb-6 rounded-full"></div>
           
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Join thousands of happy families who trust Care.xyz for their loved ones&apos; well-being.
