@@ -1,20 +1,11 @@
 import Link from 'next/link';
 import { services } from '@/data/services';
 
-const ServicesOverview = () => {
+const ServicesComponent = () => {
   return (
-    <section className="bg-base-200 py-20 px-6">
+    <section className="bg-base-200 py-10 px-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-base-content mb-4">
-            Our Care Services
-          </h2>
-          <p className="text-base-content/70 text-lg max-w-2xl mx-auto">
-            Professional, compassionate, and reliable care services tailored to meet the unique needs of every family member.
-          </p>
-        </div>
-
+       <h1 className='text-4xl font-bold mb-5'>Services <span className='text-primary'>({services.length})</span></h1>
         {/* Services Grid */}
         <div className="grid md:grid-cols-3 gap-8">
           {services.map((service) => (
@@ -69,4 +60,4 @@ const ServicesOverview = () => {
   );
 };
 
-export default ServicesOverview;
+export default ServicesComponent;
