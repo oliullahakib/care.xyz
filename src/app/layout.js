@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: {
-    default: "Care.xyz",
+    default: "Home | Care.xyz",
     template: "%s | Care.xyz"
   },
   description: "Every care in a single place.Less hassle more care",
