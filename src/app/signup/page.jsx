@@ -7,6 +7,7 @@ import Logo from '@/components/Shared/Logo';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 import SocialLogin from '@/components/Buttons/SocialLogin';
+import { creatUser } from '@/action/auth';
 
 const SignUpPage = () => {
     const router = useRouter();
@@ -44,12 +45,35 @@ const SignUpPage = () => {
         const email = form.email.value;
         const password = form.password.value;
         const provider = "credentials";
-
         const signupData = { nid, contact, name, email, password, provider };
-        console.log("signupData", signupData);
 
         // Your signup logic here...
-        
+        try {
+            const result = await creatUser(signupData);
+            if (result.insertedId) {
+                Swal.fire({
+                    title: "Success!",
+                    text: "User created successfully",
+                    icon: "success",
+                })
+                form.reset();
+                router.push("/login");
+            } else if (result.error) {
+                Swal.fire({
+                    title: "Error!",
+                    text: result.error,
+                    icon: "error",
+                    confirmButtonColor: "#d33"
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                title: "Error!",
+                text: "Something went wrong. Please try again.",
+                icon: "error",
+                confirmButtonColor: "#d33"
+            });
+        }
     };
 
     const requirements = [
@@ -162,8 +186,8 @@ const SignUpPage = () => {
                                     className="input input-bordered w-full pl-12 h-14 rounded-2xl bg-base-200/50 border-base-300 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium"
                                     required
                                 />
-                                <span 
-                                    onClick={() => setShowPassword(!showPassword)} 
+                                <span
+                                    onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-base-content/30 group-focus-within:text-primary transition-colors cursor-pointer"
                                 >
                                     {showPassword ? <FaEye /> : <FaEyeSlash />}
@@ -190,8 +214,9 @@ const SignUpPage = () => {
                             </div>
                         </div>
 
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
+                            disabled ={passwordRequirements.minLength && passwordRequirements.hasUppercase && passwordRequirements.hasLowercase?false:true}
                             className="btn btn-primary w-full h-14 rounded-2xl text-lg font-black shadow-xl shadow-primary/20 mt-2 capitalize"
                         >
                             Create Account
