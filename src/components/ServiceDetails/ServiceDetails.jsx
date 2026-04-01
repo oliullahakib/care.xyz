@@ -1,10 +1,20 @@
 'use client';
 import { useState } from 'react';
 import { FaClock, FaShieldAlt, FaUser } from "react-icons/fa";
+import { usePathname, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const ServiceDetails = ({ service }) => {
   const [activeTab, setActiveTab] = useState("overview");
-
+  const session = useSession()
+  const pathname = usePathname()
+  const router = useRouter();
+const handleBooking = ()=>{
+  if(session.status==="unauthenticated"){
+    router.push(`/login?callbackUrl=${pathname}`)
+  }
+  router.push(`/booking/${service.id}`)
+}
   return (
     <section className="bg-base-100 py-16 px-6">
       <div className="max-w-6xl mx-auto">
@@ -33,7 +43,7 @@ const ServiceDetails = ({ service }) => {
                 <p className="text-4xl font-bold">৳{service.price}</p>
                 <p className="text-sm">/{service.priceUnit}</p>
               </div>
-              <button className="btn btn-primary btn-lg rounded-2xl px-10">
+              <button onClick={handleBooking} className="btn btn-primary btn-lg rounded-2xl px-10">
                 Book Now
               </button>
             </div>
