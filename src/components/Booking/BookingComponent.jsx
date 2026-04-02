@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { createBooking } from '@/action/booking';
 import { Toast } from '@/app/login/page';
 import Swal from 'sweetalert2';
+import { icons } from 'lucide';
 const BookingForm = ({ service }) => {
     const [selectedDivision, setSelectedDivision] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -51,6 +52,7 @@ const BookingForm = ({ service }) => {
             notes,
             userName: session.data.user.name,
             email: session.data.user.email,
+            image:service.image
         };
 
         try {
@@ -60,6 +62,12 @@ const BookingForm = ({ service }) => {
                     icon: "success",
                     title: result?.message
                 });
+                e.target.reset()
+                setDuration(service?.minDuration || 8)
+                setNotes('')
+                setSelectedDivision('')
+                setSelectedDistrict('')
+                setSelectedArea('')
 
             } else {
                 Toast.fire({
@@ -258,9 +266,10 @@ const BookingForm = ({ service }) => {
                 </div>
                 <button
                     type="submit"
+                    disabled={loading}
                     className="btn btn-primary w-full h-14 rounded-2xl text-lg font-bold shadow-xl mt-6"
                 >
-                    Confirm Booking for {service?.title}
+                    {loading ? "Booking..." : "Confirm Booking for " + service?.title}
                 </button>
             </form>
         </div>

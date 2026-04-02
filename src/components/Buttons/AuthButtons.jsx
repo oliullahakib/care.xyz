@@ -69,10 +69,10 @@ const AuthButtons = () => {
 
                 <div className="space-y-2">
                   <Link
-                    href="/profile"
+                    href="/my-bookings"
                     className="flex items-center space-x-3 p-3 rounded-2xl hover:bg-base-200 transition-colors font-medium text-sm"
                   >
-                    <span>View Profile</span>
+                    <span>My Bookings</span>
                   </Link>
                   <button
                     onClick={() => signOut()}
