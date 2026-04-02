@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { FaMapMarkerAlt, FaClock, FaCalendarAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaClock, FaCalendarAlt, FaUser } from 'react-icons/fa';
+import { MdEmail } from "react-icons/md";
 import divisions from "@/data/division.json"
 import locationData from "@/data/location.json"
+import { useSession } from 'next-auth/react';
 const BookingForm = ({ service }) => {
     const [selectedDivision, setSelectedDivision] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -11,7 +13,7 @@ const BookingForm = ({ service }) => {
     const [duration, setDuration] = useState(service?.minDuration || 8);
     const [serviceDate, setServiceDate] = useState('');
     const [notes, setNotes] = useState('');
-
+    const session = useSession()
     // Filter districts based on selected division
     const filteredDistricts = useMemo(() => {
         if (!selectedDivision || !service) return [];
@@ -72,6 +74,33 @@ const BookingForm = ({ service }) => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Name */}
+                    <div>
+                        <label className="text-sm font-medium text-base-content mb-2 flex items-center gap-2">
+                            <FaUser className="text-primary" /> Name
+                        </label>
+                        <input
+                            value={session?.data?.user?.name}
+                            className="select select-bordered w-full rounded-2xl h-14 bg-base-200 border-base-300 focus:border-primary"
+                            required
+                            disabled
+                        />
+                    </div>
+
+                    {/* Name */}
+                    <div>
+                        <label className="text-sm font-medium text-base-content mb-2 flex items-center gap-2">
+                            <MdEmail className="text-primary" /> Email
+                        </label>
+                        <input
+                            value={session?.data?.user?.email}
+                            className="select select-bordered w-full rounded-2xl h-14 bg-base-200 border-base-300 focus:border-primary"
+                            required
+                            disabled
+                        />
+                    </div>
+                </div>
                 {/* Service Duration */}
                 <div>
                     <label className="text-sm font-medium text-base-content mb-2 flex items-center gap-2">
@@ -199,7 +228,7 @@ const BookingForm = ({ service }) => {
                     </div>
                     <div className='flex justify-between'>
                         <span className='text-lg font-bold'>Total Coast:</span>
-                        <span className='text-2xl text-primary font-bold'>{service.price*duration}tk</span>
+                        <span className='text-2xl text-primary font-bold'>{service.price * duration}tk</span>
                     </div>
                 </div>
                 <button
