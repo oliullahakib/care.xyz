@@ -8,17 +8,7 @@ import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'next/navigation';
 import SocialLogin from '@/components/Buttons/SocialLogin';
-
-const LoginPage = () => {
-    const router = useRouter();
-    const params = useSearchParams();
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        const email = form.email.value;
-        const password = form.password.value;
-
-        const Toast = Swal.mixin({
+export const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
             showConfirmButton: false,
@@ -29,6 +19,15 @@ const LoginPage = () => {
                 toast.onmouseleave = Swal.resumeTimer;
             }
         });
+const LoginPage = () => {
+    const router = useRouter();
+    const params = useSearchParams();
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+
 
         try {
             const result = await signIn("credentials", {

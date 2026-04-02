@@ -6,13 +6,16 @@ import { MdEmail } from "react-icons/md";
 import divisions from "@/data/division.json"
 import locationData from "@/data/location.json"
 import { useSession } from 'next-auth/react';
+import { createBooking } from '@/action/booking';
+import { Toast } from '@/app/login/page';
+import Swal from 'sweetalert2';
 const BookingForm = ({ service }) => {
     const [selectedDivision, setSelectedDivision] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedArea, setSelectedArea] = useState('');
     const [duration, setDuration] = useState(service?.minDuration || 8);
-    const [serviceDate, setServiceDate] = useState('');
     const [notes, setNotes] = useState('');
+    const [loading, setLoading] = useState(false)
     const session = useSession()
     // Filter districts based on selected division
     const filteredDistricts = useMemo(() => {
@@ -33,9 +36,9 @@ const BookingForm = ({ service }) => {
         return districtData ? districtData.covered_area : [];
     }, [selectedDivision, selectedDistrict]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true)
         const bookingData = {
             serviceId: service?.id,
             serviceTitle: service?.title,
@@ -44,13 +47,36 @@ const BookingForm = ({ service }) => {
             area: selectedArea,
             duration: duration,
             totalCost: service?.price * duration,
-            serviceDate,
+            serviceDate: new Date(e.target.date.value).toISOString(),
             notes,
+            userName: session.data.user.name,
+            email: session.data.user.email,
         };
 
-        console.log("Booking Data:", bookingData);
-        alert(`Booking request for ${service?.title} submitted successfully!`);
-        // TODO: Send to your backend API
+        try {
+            const result = await createBooking(bookingData)
+            if (result.success) {
+                Toast.fire({
+                    icon: "success",
+                    title: result?.message
+                });
+
+            } else {
+                Toast.fire({
+                    icon: "error",
+                    title: result?.message
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                title: "Error!",
+                text: "Something went wrong. Please try again.",
+                icon: "error",
+                confirmButtonColor: "#d33"
+            });
+        } finally {
+            setLoading(false)
+        }
     };
 
     // Generate duration options between minDuration and maxDuration
@@ -81,7 +107,7 @@ const BookingForm = ({ service }) => {
                             <FaUser className="text-primary" /> Name
                         </label>
                         <input
-                            value={session?.data?.user?.name}
+                            defaultValue={session?.data?.user?.name}
                             className="select select-bordered w-full rounded-2xl h-14 bg-base-200 border-base-300 focus:border-primary"
                             required
                             disabled
@@ -94,7 +120,7 @@ const BookingForm = ({ service }) => {
                             <MdEmail className="text-primary" /> Email
                         </label>
                         <input
-                            value={session?.data?.user?.email}
+                            defaultValue={session?.data?.user?.email}
                             className="select select-bordered w-full rounded-2xl h-14 bg-base-200 border-base-300 focus:border-primary"
                             required
                             disabled
@@ -196,8 +222,7 @@ const BookingForm = ({ service }) => {
                     </label>
                     <input
                         type="date"
-                        value={serviceDate}
-                        onChange={(e) => setServiceDate(e.target.value)}
+                        name="date"
                         className="input input-bordered w-full rounded-2xl h-14 bg-base-200 border-base-300 focus:border-primary"
                         required
                     />
