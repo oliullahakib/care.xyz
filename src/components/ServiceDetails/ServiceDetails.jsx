@@ -12,8 +12,10 @@ const ServiceDetails = ({ service }) => {
 const handleBooking = ()=>{
   if(session.status==="unauthenticated"){
     router.push(`/login?callbackUrl=${pathname}`)
+   
+  }else{
+    router.push(`/booking/${service.id}`)
   }
-  router.push(`/booking/${service.id}`)
 }
   return (
     <section className="bg-base-100 py-16 px-6">

@@ -57,7 +57,7 @@ const MyBookingsComponent = ({ bookings = [] }) => {
         }
     };
 
-    if (!bookings || bookings.length === 0) {
+    if (!bookings || bookings?.length === 0) {
         return (
             <div className="text-center py-20">
                 <div className="text-6xl mb-4">📭</div>
@@ -73,7 +73,7 @@ const MyBookingsComponent = ({ bookings = [] }) => {
             <h2 className="text-3xl font-bold text-base-content mb-8">My Bookings</h2>
 
             <div className="grid gap-6">
-                {bookings.map((booking) => (
+                {bookings?.map((booking) => (
                     <div
                         key={booking._id}
                         className="bg-base-100 border border-base-300 rounded-3xl p-6 md:p-8 hover:shadow-lg transition-all"

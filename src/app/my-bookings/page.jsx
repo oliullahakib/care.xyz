@@ -7,7 +7,7 @@ const MyBookingsPage = async () => {
     const session = await getServerSession(authOptions);
   const email = session?.user?.email
  const data = await getBookingsByUser(email)
- const bookings = data.data.map((booking)=>({...booking,_id:booking._id.toString()}))
+ const bookings = data?.data?.map((booking)=>({...booking,_id:booking._id.toString()}))
   return <MyBookingsComponent bookings={bookings}/>
 }
 

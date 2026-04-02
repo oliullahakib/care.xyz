@@ -12,7 +12,7 @@ const Navbar = () => {
         {label: "Contact", href: "/contact"},
     ]
     return (
-        <div className="sticky top-0 z-50">
+        <nav className="sticky top-0 z-50">
             <div className="navbar bg-base-200 shadow-sm max-w-7xl mx-auto rounded-2xl">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -42,7 +42,7 @@ const Navbar = () => {
                   <AuthButtons/>
                 </div>
             </div>
-        </div>
+        </nav>
     )
 }
 
